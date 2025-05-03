@@ -1,0 +1,148 @@
+1.- Define con tus palabras qué es una base de datos. (2 pts)
+
+Es una herramienta que almacena información de manera organizada o estructurada que se almacena de forma electrónica para su consulta y modificación.
+
+3.- Menciona dos diferencias entre bases de datos relacionales y NoSQL. (2 pts)
+
+Las bases NoSQL tienen mayor rendimiento y escalabilidad.
+Las bases relacionales utilizan SQL para manejar los datos en tablas estructuradas, mientras que las no SQL se manejan en diccionarios.
+
+3.- Escribe el nombre de dos gestores de bases de datos y un caso de uso de cada uno. (2 pts)
+
+MySQL: Aplicaciones locales, donde se requiere confiabilidad y estabilidad.
+Oracle: Aplicaciones empresariales, donde se requiere el manejo de una gran cantidad de datos y es vital la seguridad de estos.
+
+4.- ¿Qué representa un modelo entidad-relación y qué elementos lo componen? (2 pts)
+
+Es un diagrama simplificado que muestra como las entidades se relacionan en un sistema.
+
+A este diagrama lo componen, entidades, atributos y relaciones.
+
+5.- ¿Qué es la cardinalidad en un diagrama ER? Da un ejemplo. (2 pts)
+
+Es la relación que existe entre dos entidades de forma numérica.
+En una bases de datos de Escuela, donde hay una tabla de estudiantes y maestros, se le puede relacionar a un alumno varias materias, su cardinalidad será (1:n).
+
+6.-Explica brevemente qué es la normalización y su objetivo. (2 pts)
+
+Es el proceso de eliminar la redundancia, mejorar la integridad con una serie de normas. Su objetivo es reducir la redundancia y simplificar las dependencias entre columnas.
+
+7.-¿Cuál es la diferencia entre una clave primaria y una clave foránea? (2 pts)
+
+La clave primaria  es única en una tabla, mientras que la clave foránea es un campo o más de uno en una tabla para relacionarse con otra entidad.
+
+8.- Menciona dos funciones de texto en SQL y da un ejemplo de uso. (2 pts)
+
+LOWER: convierte una cadena en letras minúsculas.
+UPPER: convierte una cadena en letras mayúsculas.
+
+9.- ¿Qué hace la función AVG() en SQL? ¿Con qué tipo de datos se usa? (2 pts)
+
+Calcula el promedio o media aritmética y se usa con datos numéricos.
+
+10.- ¿Para qué sirve IS NULL en una consulta SQL? (2 pts)
+
+Para comprobar si una columna contiene un valor/dato NUL, y devuelve TRUE si la columna contiene NULL o FALSE en caso contrario contrario. 
+
+Práctico
+
+Usa esta estructura de tabla:
+
+CREATE TABLE alumnos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  edad INT,
+  promedio DECIMAL(4,2),
+  genero CHAR(1),
+  fecha_ingreso DATE
+);
+
+Parte A: Lenguaje DDL (10 puntos)
+1.- Escribe el comando SQL para crear la tabla anterior. (5 pts)
+
+USE escuela;
+
+CREATE TABLE alumnos2 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  edad INT,
+  promedio DECIMAL(4,2),
+  genero CHAR(1),
+  fecha_ingreso DATE
+);
+
+2.- Agrega una restricción para que el promedio no pueda ser menor a 6. (5 pts)
+
+CREATE TABLE alumnos2 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100) NOT NULL,
+  edad INT,
+  promedio DECIMAL(4,2) CHECK (promedio >= 6),
+  genero CHAR(1),
+  fecha_ingreso DATE
+);
+
+Parte B: Inserción y actualización (20 puntos)
+3.- Inserta tres alumnos con datos reales. (10 pts)
+
+INSERT INTO alumnos2 (nombre, edad, promedio, genero, fecha_ingreso)
+VALUES ('Javier Hernández', 20, 8.50, 'F', '2024-08-15');
+
+INSERT INTO alumnos2 (nombre, edad, promedio, genero, fecha_ingreso)
+VALUES ('Juan Hernández', 22, 7.30, 'M', '2023-09-10');
+
+INSERT INTO alumnos2 (nombre, edad, promedio, genero, fecha_ingreso)
+VALUES ('Lucía Hernández', 20, 9.10, 'F', '2025-01-20');
+
+4.- Actualiza el promedio de un alumno a 9.5. (10 pts)
+UPDATE alumnos2
+SET promedio = 5
+WHERE nombre = 'Lucía Hernández';
+
+Parte C: Consultas básicas (30 puntos)
+5.- Muestra todos los alumnos. (5 pts)
+
+SELECT * FROM alumnos2;
+
+6.- Muestra solo los nombres de las alumnas. (5 pts)
+SELECT nombre
+FROM alumnos2
+WHERE genero = 'F';
+
+7.- Muestra los alumnos con promedio mayor a 8. (5 pts
+SELECT nombre, promedio
+FROM alumnos2
+WHERE promedio > 8;
+
+8.- Muestra los alumnos ordenados por fecha de ingreso. (5 pts)
+SELECT nombre, fecha_ingreso
+FROM alumnos2
+ORDER BY fecha_ingreso;
+
+9.-Muestra el nombre y promedio con alias. (5 pts)
+SELECT nombre AS 'Nombre del Alumno', promedio AS 'Promedio Final'
+FROM alumnos2;
+
+10.- Busca alumnos cuyo nombre comience con "A". (5 pts)
+SELECT nombre
+FROM alumnos2
+WHERE nombre LIKE 'A%';
+
+Parte D: Funciones y operadores (20 puntos)
+11.- Cantidad total de alumnos. (5 pts)
+SELECT COUNT(*) AS 'Cantidad Total de Alumnos'
+FROM alumnos2;
+
+12.- Promedio general. (5 pts)
+SELECT AVG(promedio) AS 'Promedio General'
+FROM alumnos2;
+
+13.- Alumno con menor promedio. (5 pts)
+SELECT nombre, promedio
+FROM alumnos2
+WHERE promedio = (SELECT MIN(promedio) FROM alumnos2);
+
+14.- Alumnos que ingresaron este año. (5 pts)
+SELECT nombre, fecha_ingreso
+FROM alumnos2
+WHERE YEAR(fecha_ingreso) = YEAR(CURDATE());
